@@ -28,7 +28,6 @@
 
 */
 
-// Test
 #ifndef vscptcpclient_h
 #define vscptcpclient_h
 
