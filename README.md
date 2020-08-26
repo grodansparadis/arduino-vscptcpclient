@@ -13,6 +13,10 @@ Documentation for this library and other parts of the VSCP framework is [here](h
 
 The home page for the VSCP project is [here](https://www.vscp.org) and the main repository is [here](https://github.com/grodansparadis/vscp).
 
+## Examples
+
+The library comes with a number of example sketches. See File > Examples > VscpTcpClient within the Arduino application.
+
 ---
 
 Copyright © 2000-2020 Ake Hedman, Grodans Paradis AB - MIT license.
