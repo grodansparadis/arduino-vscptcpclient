@@ -9,7 +9,7 @@ The callback function has the following prototype:
 
 ### Parameters
 
- * **pex** - Pointer to a VSCP event ([VscpEventEx](https://github.com/grodansparadis/vscp/blob/master/src/vscp/common/vscp.h)) received from the remote VSCP host. When you are done handling this event you should delete it (ex _delete pex_).
+ * **pex** - Pointer to a VSCP event ([VscpEventEx](https://github.com/grodansparadis/vscp/blob/master/src/vscp/common/vscp.h) ![External Link](./images/Icon_External_Link.png)) received from the remote VSCP host. When you are done handling this event you should delete it (ex _delete pex_).
 
  ### Returns
  void

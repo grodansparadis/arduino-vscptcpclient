@@ -5,7 +5,7 @@ Read a VSCP event date/time from a string and write it to the date time informat
 ## int readDateTimeFromStr(vscpEventEx &ex,char *strdt)
 
 ### Parameters
- * **ex** - Reference to a VSCP event ([VscpEventEx](https://github.com/grodansparadis/vscp/blob/master/src/vscp/common/vscp.h)) that will receive the date/time data.
+ * **ex** - Reference to a VSCP event ([VscpEventEx](https://github.com/grodansparadis/vscp/blob/master/src/vscp/common/vscp.h) ![External Link](./images/Icon_External_Link.png)) that will receive the date/time data.
  * **strdt** - A string containing date/time info on ISO form (2020-08-27T14:54:05Z).
 
 ### Returns
