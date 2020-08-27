@@ -695,66 +695,44 @@ int vscpTcpClient::setRemoteFilter(vscpEventFilter &filter)
 
   // * * * * Set Filter * * * * 
 
-  m_client->println("setfilter ");
-
   // priority
-  *buf=0;  
-  m_client->print(itoa(filter.filter_priority,buf,10));
-  m_client->print(",");
-
-  // class
-  *buf=0;  
-  m_client->print(itoa(filter.filter_class,buf,10));
-  m_client->print(",");
-
-  // type
-  *buf=0;  
-  m_client->print(itoa(filter.filter_type,buf,10));
-  m_client->print(",");
+  memset(buf,0,sizeof(buf));  
+  sprintf(buf,
+          "setfilter %d,%d,%d,",
+          filter.filter_priority,
+          filter.filter_class,
+          filter.filter_type);
+  m_client->print(buf);        
 
   // GUID
-  *buf=0;
+  memset(buf,0,sizeof(buf));
   writeGuidToStr(buf,filter.filter_GUID);
-  m_client->print(buf);
+  m_client->println(buf);
 
-  m_client->println();
-
-  // * * * * Set Mask * * * * 
-
-  if ( VSCP_ERROR_SUCCESS != checkResponse() ) {
-    return VSCP_ERROR_ERROR;
-  }
-
-  m_client->println("setmask ");
-
-  // priority
-  *buf=0;  
-  m_client->print(itoa(filter.mask_priority,buf,10));
-  m_client->print(",");
-
-  // class
-  *buf=0;  
-  m_client->print(itoa(filter.mask_class,buf,10));
-  m_client->print(",");
-
-  // type
-  *buf=0;  
-  m_client->print(itoa(filter.mask_type,buf,10));
-  m_client->print(",");
-
-  // GUID
-  *buf=0;
-  writeGuidToStr(buf,filter.mask_GUID);
-  m_client->print(buf);
-
-  m_client->println();
   m_client->flush();
 
   if ( VSCP_ERROR_SUCCESS != checkResponse() ) {
     return VSCP_ERROR_ERROR;
   }
 
-  return VSCP_ERROR_SUCCESS;
+  // * * * * Set Mask * * * * 
+
+  // priority
+  sprintf(buf,
+          "setmask  %d,%d,%d,",
+          filter.mask_priority,
+          filter.mask_class,
+          filter.mask_type);
+  m_client->print(buf);
+
+  // GUID
+  memset(buf,0,sizeof(buf));
+  writeGuidToStr(buf,filter.mask_GUID);
+  m_client->println(buf);
+
+  m_client->flush();
+
+  return checkResponse();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
