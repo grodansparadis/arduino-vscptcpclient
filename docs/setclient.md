@@ -1,6 +1,6 @@
 # SetClient
 
-## void setClient(Client& client);
+## void setClient(Client& client)
 
 Sets the network client instance to use.
 

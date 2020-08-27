@@ -2,7 +2,7 @@
 
 Assign a new GUID for this session at the remote VSCP host side.
 
-## int setRemoteGUID(const uint8_t *pGUID);
+## int setRemoteGUID(const uint8_t *pGUID)
 
 ### Parameters
 * **pGUID** - 16-byte GUID to set.

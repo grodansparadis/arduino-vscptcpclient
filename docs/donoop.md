@@ -2,7 +2,7 @@
 
 Do a 'no-operation' on the remote server. Typically used to test operation son the host side.
 
-## int doNoop(void);
+## int doNoop(void)
 
 ### Parameters
 none

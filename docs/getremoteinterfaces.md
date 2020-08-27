@@ -4,9 +4,7 @@ Get interfaces available on the remote VSCP host.
 
 **Warning** If the remote host have many interfaces the assigned buffer will not be able to hold them and must be increase with [setResponseBufferSize](./setresponsebuffersize.md)
 
-## int getRemoteInterfaces(uint8_t *pcnt, 
-                            const char **pinterfaces, 
-                            uint8_t size);
+## int getRemoteInterfaces(uint8_t *pcnt, const char **pinterfaces, uint8_t size)
 
 ### Parameters
 * ** pcnt** - A pointer to a byte that get the number of interfaces on the remote host.

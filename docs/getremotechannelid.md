@@ -2,7 +2,7 @@
 
 Get the channel id for our current session at the remote VSCP host.
 
-## int getRemoteChannelId(uint32_t *chid);
+## int getRemoteChannelId(uint32_t *chid)
 
 ### Parameters
 * **chid** - A pointer to an unsigned 32-bit integer that will receive the channel id.

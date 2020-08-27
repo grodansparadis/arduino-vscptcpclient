@@ -2,7 +2,7 @@
 
 Returns the last response from the remote VSCP host.
 
-## uint8_t *getLastResponse(void) { return m_pbuf; }
+## uint8_t *getLastResponse(void)
 
 ### Parameters
 none

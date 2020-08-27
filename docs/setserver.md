@@ -1,6 +1,6 @@
 # SetServer
 
-## void setServer(IPAddress ip, uint16_t port);
+## void setServer(IPAddress ip, uint16_t port)
 
 Sets the server details.
 
@@ -13,7 +13,7 @@ void
 
 ----
     
-## void setServer(uint8_t *ip, uint16_t port);
+## void setServer(uint8_t *ip, uint16_t port)
 
 Sets the server details.
 
@@ -24,7 +24,7 @@ Sets the server details.
 ### Returns
 void
 
-## void setServer(const char *domain, uint16_t port);
+## void setServer(const char *domain, uint16_t port)
 
 Sets the server details.
 
