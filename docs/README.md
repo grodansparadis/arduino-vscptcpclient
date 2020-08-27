@@ -15,6 +15,6 @@ Current information about VSCP (Very Simple Control Protocol) can be found at ht
 
 The library is licensed under [the  MIT License](https://opensource.org/licenses/MIT) so it can be used freely in opne and closed project.
 
-Viewable/downloadable documentation is [here](https://docs.vscp.org)
+Viewable/downloadable documentation for VSCP & Friends is [here](https://docs.vscp.org)
 
 [filename](./bottom_copyright.md ':include')
