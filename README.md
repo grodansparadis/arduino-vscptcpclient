@@ -15,7 +15,7 @@ The home page for the VSCP project is [here](https://www.vscp.org) and the main 
 
 ## Examples
 
-The library comes with a number of example sketches. See File > Examples > VscpTcpClient within the Arduino application.
+The library comes with a number of example sketches. See File > Examples > VscpTcpClient within the Arduino application or the example folder [here](https://github.com/grodansparadis/arduino-vscptcpclient/tree/master/examples).
 
 ---
 

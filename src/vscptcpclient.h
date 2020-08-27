@@ -40,12 +40,6 @@
 // Wait time if no events in queue
 #define VSCP_CLIENT_TCP_LOOP_WAIT   1000
 
-// socket timeout interval in Seconds. 
-// Override with setSocketTimeout()
-#ifndef VSCP_SOCKET_TIMEOUT
-#define VSCP_SOCKET_TIMEOUT 15
-#endif
-
 // Max size of response buffer. 
 // Override with setResponseBufferSize()
 #ifndef VSCP_MAX_RESPONSE_BUFFER
@@ -90,12 +84,17 @@ class vscpTcpClient /*: public Print*/ {
     void setServer(IPAddress ip, uint16_t port);
     void setServer(uint8_t * ip, uint16_t port);
     void setServer(const char * domain, uint16_t port);
+    
     void setCallback(VSCP_CALLBACK_PROTOTYPE);
     void setClient(Client& client);
+    
     boolean setResponseBufferSize(uint16_t size);
     void setResponseTimeout(uint16_t timeout);
-    void setSocketTimeout(uint16_t timeout);
 
+    /*!
+      Returns the state of the client
+      @return The connection state.
+    */
     int state();
 
     /*!
@@ -107,7 +106,7 @@ class vscpTcpClient /*: public Print*/ {
     int32_t readStringValue(char *strval);
 
     /*!
-      Read GUID from string to buffer
+      Read GUID on string and put as bytes in buffer
       
       @param buf 16 byte GUID buffer.
       @param strguid GUID on string form.
@@ -167,7 +166,7 @@ class vscpTcpClient /*: public Print*/ {
       @return Return VSCP_ERROR_SUCCESS on success or errocode in 
               failure.
     */
-    int disconnect();
+    int disconnect(void);
 
     /*!
         Check response from remote host. 
@@ -185,7 +184,7 @@ class vscpTcpClient /*: public Print*/ {
     /*!
         Returns the last response from the remote host.
 
-        @return Return last respons as a reference to a char string
+        @return Return last response as a pointer to a char string
     */
     uint8_t *getLastResponse(void) { return m_pbuf; };
 

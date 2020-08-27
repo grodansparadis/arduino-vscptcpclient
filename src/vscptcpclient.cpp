@@ -39,7 +39,6 @@ vscpTcpClient::vscpTcpClient()
     setResponseBufferSize(VSCP_MAX_RESPONSE_BUFFER);
     setResponseTimeout(VSCP_RESPONSE_TIMEOUT);
     setCallback(NULL);
-    setSocketTimeout(VSCP_SOCKET_TIMEOUT);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -54,7 +53,6 @@ vscpTcpClient::vscpTcpClient(Client& client)
     m_lastLoop = 0;
     setResponseBufferSize(VSCP_MAX_RESPONSE_BUFFER);
     setResponseTimeout(VSCP_RESPONSE_TIMEOUT);
-    setSocketTimeout(VSCP_SOCKET_TIMEOUT);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -72,7 +70,6 @@ vscpTcpClient::vscpTcpClient(IPAddress addr,
     m_lastLoop = 0;
     setResponseBufferSize(VSCP_MAX_RESPONSE_BUFFER);
     setResponseTimeout(VSCP_RESPONSE_TIMEOUT);
-    setSocketTimeout(VSCP_SOCKET_TIMEOUT);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -92,7 +89,6 @@ vscpTcpClient::vscpTcpClient(IPAddress addr,
     m_lastLoop = 0;
     setResponseBufferSize(VSCP_MAX_RESPONSE_BUFFER);
     setResponseTimeout(VSCP_RESPONSE_TIMEOUT);
-    setSocketTimeout(VSCP_SOCKET_TIMEOUT);
 }
 
 
@@ -111,7 +107,6 @@ vscpTcpClient::vscpTcpClient(uint8_t *ip,
     m_lastLoop = 0;
     setResponseBufferSize(VSCP_MAX_RESPONSE_BUFFER);
     setResponseTimeout(VSCP_RESPONSE_TIMEOUT);
-    setSocketTimeout(VSCP_SOCKET_TIMEOUT);
 }
 
 
@@ -132,7 +127,6 @@ vscpTcpClient::vscpTcpClient(uint8_t *ip,
     m_lastLoop = 0;
     setResponseBufferSize(VSCP_MAX_RESPONSE_BUFFER);
     setResponseTimeout(VSCP_RESPONSE_TIMEOUT);
-    setSocketTimeout(VSCP_SOCKET_TIMEOUT);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -150,7 +144,6 @@ vscpTcpClient::vscpTcpClient(const char* domain,
     m_lastLoop = 0;
     setResponseBufferSize(VSCP_MAX_RESPONSE_BUFFER);
     setResponseTimeout(VSCP_RESPONSE_TIMEOUT);
-    setSocketTimeout(VSCP_SOCKET_TIMEOUT);
 }
 
 
@@ -171,7 +164,6 @@ vscpTcpClient::vscpTcpClient(const char* domain,
     m_lastLoop = 0;
     setResponseBufferSize(VSCP_MAX_RESPONSE_BUFFER);
     setResponseTimeout(VSCP_RESPONSE_TIMEOUT);
-    setSocketTimeout(VSCP_SOCKET_TIMEOUT);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -266,17 +258,9 @@ boolean vscpTcpClient::setResponseBufferSize(uint16_t size)
   return (NULL != m_pbuf);
 }
 
-///////////////////////////////////////////////////////////////////////////////
-// setSocketTimeout
-//
-
-void vscpTcpClient::setSocketTimeout(uint16_t timeout) 
-{
-  m_socketTimeout = timeout;
-}
 
 ///////////////////////////////////////////////////////////////////////////////
-// setSocketTimeout
+// setResponseTimeout
 //
 
 void vscpTcpClient::setResponseTimeout(uint16_t timeout)
