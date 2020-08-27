@@ -1,8 +1,8 @@
-# int getRemoteVersion(char *pVersion);
+# getRemoteVersion
 
 Get the version of the remote VSCP host.
 
-## int getRemoteVersion(char *pVersion);
+## int getRemoteVersion(char *pVersion)
 
 ### Parameters
 * **pVersion** - A pointer to a string buffer tyhat will receive the version string.
