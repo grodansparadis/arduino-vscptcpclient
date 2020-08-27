@@ -5,8 +5,6 @@
 
   For temperature readings to work the example need a 1-wire temperature 
   sensor connected to GPIO 5. Need a 4k7 pullup.
-
-  Ake Hedman, Grodans Paradis AB <akhe@grodansparadis.com>
 */
 
 #include <ESP8266WiFi.h>
@@ -35,11 +33,14 @@ const char *vscp_password = "secret";
 WiFiClient espClient;
 // WiFiClientSecure espClient;
 
-// Define VSCP client object
+// Prototypes
+void dumpVscpEvent(vscpEventEx *pex);
+
+// Polling version
 vscpTcpClient vscp(vscp_server, vscp_port, espClient);
 
 // GPIO where the DS18B20 is connected to
-const int oneWireBus = 5;  (D1 on NodeMCU)
+const int oneWireBus = 5;
 
 // Setup a oneWire instance to communicate with any OneWire devices
 OneWire oneWire(oneWireBus);
@@ -91,14 +92,6 @@ void setup() {
   Serial.print("ESP Board GUID:  ");
   Serial.println(vscp_guid);
 
-}
-
-///////////////////////////////////////////////////////////////////////////////
-// loop
-//
-
-void loop() 
-{ 
   sensors.requestTemperatures();
   float tempC = sensors.getTempCByIndex(0);
   Serial.print(tempC);
@@ -114,13 +107,14 @@ void loop()
 
   // Connect to the VSCP remote host
   if ( VSCP_ERROR_SUCCESS == vscp.connect("admin","secret") ) {
-    Serial.println("Connected to VSCP remote host");
+    Serial.printf("Connected to VSCP remote host");
   }
   else {
-    Serial.println("Failed to connect to VSCP remote host");
+    Serial.printf("Failed to connect to VSCP remote host");
   }
 
   vscpEventEx ex;
+  char buf[80];
 
   // Construct woken up event to tell the world we are on-line
   // https://docs.vscp.org/spec/latest/#/./class1.information?id=type29
@@ -141,7 +135,7 @@ void loop()
   ex.data[2] = 0;          // Subzone
   
   if ( VSCP_ERROR_SUCCESS == vscp.sendEventToRemote(ex) ) {
-    Serial.println("Sent woken up event");  
+    Serial.println("Sent event");  
   }
   else {
     Serial.println("Failed to send event");
@@ -174,7 +168,7 @@ void loop()
   
   
   if ( VSCP_ERROR_SUCCESS == vscp.sendEventToRemote(ex) ) {
-    Serial.println("Sent temperature event");  
+    Serial.println("Sent event");  
   }
   else {
     Serial.println("Failed to send event");
@@ -203,7 +197,7 @@ void loop()
   ex.sizeData = 4 + strlen((char *)ex.data+4) + 1; // We include the terminating zero  
   
   if ( VSCP_ERROR_SUCCESS == vscp.sendEventToRemote(ex) ) {
-    Serial.println("Sent level I temperature event");  
+    Serial.println("Sent event");  
   }
   else {
     Serial.println("Failed to send event");
@@ -233,16 +227,161 @@ void loop()
   ex.sizeData = 4;
 
   if ( VSCP_ERROR_SUCCESS == vscp.sendEventToRemote(ex) ) {
-    Serial.println("Sent battery voltage event");  
+    Serial.println("Sent event");  
   }
   else {
     Serial.println("Failed to send event");
   }
 
-  // Disconnect from VSCP host
-  vscp.disconnect();
+  // -----------
 
-  delay(30000);
+  // Noop
+  if ( VSCP_ERROR_SUCCESS == vscp.doNoop() ) {
+    Serial.println("Noop OK");  
+  }
+  else {
+    Serial.println("Noop Failed");
+  }
+
+  // Remote server version
+  if ( VSCP_ERROR_SUCCESS == vscp.getRemoteVersion(buf) ) {
+    Serial.print("Version: ");  
+    Serial.println(buf);
+  }
+  else {
+    Serial.println("Version failed");
+  }
+
+  // Remote server version
+  uint32_t chid;
+  if ( VSCP_ERROR_SUCCESS == vscp.getRemoteChannelId(&chid) ) {
+    Serial.print("Channel id: ");  
+    Serial.println(chid);
+  }
+  else {
+    Serial.println("getRemoteChannelId failed");
+  }
+
+  if ( VSCP_ERROR_SUCCESS == vscp.getRemoteGUID(ex.GUID) ) {
+    Serial.print("Channel GUID: ");
+    vscp.writeGuidToStr(buf, ex.GUID);
+    Serial.println(buf);
+  }
+  else {
+    Serial.println("getRemoteGUID failed");
+  }
+
+  ex.GUID[0] = 0x55;
+  ex.GUID[1] = 0xAA;
+  if ( VSCP_ERROR_SUCCESS == vscp.setRemoteGUID(ex.GUID) ) {
+    Serial.println("setRemoteGUID success");
+  }
+  else {
+    Serial.println("setRemoteGUID failed");
+  }
+
+  if ( VSCP_ERROR_SUCCESS == vscp.getRemoteGUID(ex.GUID) ) {
+    Serial.print("Channel GUID: ");
+    vscp.writeGuidToStr(buf, ex.GUID);
+    Serial.println(buf);
+  }
+  else {
+    Serial.println("getRemoteGUID failed");
+  }
+
+  // Read events
+
+  // for ( int i=0; i<10; i++) {
+
+  //   uint16_t cnt;
+
+    // while(true) {
+    //   yield();
+    //   if ( VSCP_ERROR_SUCCESS == vscp.checkRemoteBufferCount(&cnt) ) {
+        
+    //     Serial.print("Frames in remote buffer: ");
+    //     Serial.println(cnt);
+
+    //     if (cnt) {
+    //       while ( VSCP_ERROR_SUCCESS == vscp.fetchRemoteEvent(ex) ) {            
+            
+    //         Serial.print("VSCP head=");
+    //         Serial.println(ex.head);
+            
+    //         Serial.print("VSCP Class=");
+    //         Serial.println(ex.vscp_class);
+            
+    //         Serial.print("VSCP Type=");
+    //         Serial.println(ex.vscp_type);
+            
+    //         Serial.print("VSCP OBID=");
+    //         Serial.println(ex.obid);
+
+    //         vscp.writeDateTimeToStr(buf,ex);
+    //         Serial.print("VSCP DateTime=");
+    //         Serial.println(buf);
+
+    //         Serial.print("VSCP Timestamp=");
+    //         Serial.println(ex.timestamp);
+
+    //         Serial.print("VSCP GUID=");
+    //         vscp.writeGuidToStr(buf,ex.GUID);
+    //         Serial.println(buf);
+
+    //         Serial.print("VSCP sizeData=");
+    //         Serial.println(ex.sizeData);
+
+    //         Serial.print("VSCP Data: ");
+    //         for ( int j=0; j<ex.sizeData; j++ ) {
+    //           Serial.print("0x");
+    //           itoa(ex.data[j],buf,16);
+    //           Serial.print(buf);
+    //           Serial.print(" ");
+    //         }
+    //         Serial.println();
+    //         Serial.println("--------------------------------------");
+
+    //         yield();
+    //       }
+    //     }
+    //     else {
+    //       break;
+    //     }
+  
+    //   }
+
+    // }
+
+    //delay(5000);
+  //}
+
+  if (vscp.isConnected()) {
+    Serial.println("Connected");  
+  }
+  else {
+    Serial.println("Not connected"); 
+  }
+
+  // Serial.println("Disconnecting");
+  // vscp.disconnect();
+
+  // if (vscp.isConnected()) {
+  //   Serial.println("Connected");  
+  // }
+  // else {
+  //   Serial.println("Not connected"); 
+  // }
+
+  
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// loop
+//
+
+void loop() 
+{ 
+  ; 
 }
 
 
