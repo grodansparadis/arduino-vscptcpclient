@@ -1,5 +1,6 @@
 * Overview
  * [Intro vscptcpclient](README.md)
+ * [Using the library](using.md)
  * [History](history.md)
 
 * API
