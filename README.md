@@ -9,7 +9,7 @@ VSCP tcp/ip client library for Arduino
 
 VSCP is a framework for IoT/m2m that can communicate over many different mediums and protocols. This library supports all Arduino Ethernet Client compatible hardware.
 
-Documentation for this library and other parts of the VSCP framework is [here](https://docs.vscp.org).
+Documentation for this library and other parts of the VSCP framework is [here](https://github.com/grodansparadis/arduino-vscptcpclient). Documentation for other parts of VSCP & Friends are on our [documentation site](https://docs.vscp.org).
 
 The home page for the VSCP project is [here](https://www.vscp.org) and the main repository is [here](https://github.com/grodansparadis/vscp).
 
@@ -19,6 +19,6 @@ The library comes with a number of example sketches. See File > Examples > VscpT
 
 ---
 
-Copyright © 2000-2020 Ake Hedman, Grodans Paradis AB - MIT license.
+Copyright © 2000-2020 Åke Hedman, Grodans Paradis AB - MIT license.
 
 

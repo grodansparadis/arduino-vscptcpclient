@@ -5,7 +5,7 @@
 Author 2000-2020 Åke Hedman, [Grodans Paradis AB](http://www.grodansparadis.com), &lt;[akhe@grodansparadis.com](mailto:akhe@grodansparadis.com)&gt;
 
 Document created: *${/var/creation-time}*  
-Specification version: ${/var/document-version} 
+Document version: ${/var/document-version} 
 
 
 
