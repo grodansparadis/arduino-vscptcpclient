@@ -87,6 +87,32 @@ void setup() {
     Serial.printf("Failed to connect to remote VSCP host");
   }
 
+  // If just interested in specific events set filter here with
+  // setRemoteFilter(vscpEventFilter &filter);
+  // This sample filter below only recives events of type
+  // CLASS1.MEASUREMENT, Type=6, Temperature
+
+  /*
+  vscpEventFilter filter;
+  filter.mask_priority = 0;       // No filtering on priority
+  filter.mask_class = 0xffff;     // Filtering on class
+  filter.mask_type = 0xffff;      // Filtering on type
+  memset(filter.mask_GUID,0,16);  // No filtering on GUID  
+
+  filter.filter_priority = 0;     // No filtering (set to any value)
+  filter.filter_class = 10;       // Class should be eual to 10
+  filter.filter_type = 6;          // Type should be equal to 6
+  memset(filter.filter_GUID,0,16);// No filtering on GUID (set to any value)
+
+  if ( VSCP_ERROR_SUCCESS == vscp.setRemoteFilter(filter) ) {
+    Serial.println("Filter set successfully");
+    Serial.println("We now filter on CLASS=10m Type=6");
+  }
+  else {
+    Serial.println("Failed to set filter");
+  }
+  */
+
 }
 
 ///////////////////////////////////////////////////////////////////////////////
