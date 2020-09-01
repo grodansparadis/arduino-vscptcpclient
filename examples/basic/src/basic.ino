@@ -22,9 +22,9 @@ static const char VSCP_ETH_PREFIX[] PROGMEM = "FF:FF:FF:FF:FF:FF:FF:FE:";
 
 char vscp_guid[50];
 
-const char *ssid = "grodansparadis"; // Enter the SSID of your WiFi Network.
+const char *ssid = ""; // Enter the SSID of your WiFi Network.
 const char *password =
-    "brattbergavagen17!"; // Enter the Password of your WiFi Network.
+    ""; // Enter the Password of your WiFi Network.
 
 // VSCP connection credentials
 const char *vscp_server = "192.168.1.7";
