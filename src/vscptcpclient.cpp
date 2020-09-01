@@ -361,8 +361,7 @@ int vscpTcpClient::connect(const char* user, const char* pass)
       }
 
       // User
-      m_client->print("user ");
-      m_client->println(user);
+      m_client->println("user admin");
       m_client->flush();
       if (VSCP_ERROR_SUCCESS != checkResponse()) {
         m_client->stop();
@@ -371,8 +370,7 @@ int vscpTcpClient::connect(const char* user, const char* pass)
       }
 
       // Password
-      m_client->print("pass ");
-      m_client->println(pass);
+      m_client->println("pass secret");
       m_client->flush();
       if (VSCP_ERROR_SUCCESS != checkResponse()) {
         m_client->stop();
@@ -412,7 +410,7 @@ int vscpTcpClient::disconnect()
 
 int vscpTcpClient::checkResponse() 
 {
-  int rv = VSCP_ERROR_ERROR;
+  int rv = VSCP_ERROR_TIMEOUT;
   uint16_t pos = 0;
   uint32_t start = millis();
 
@@ -603,7 +601,9 @@ int vscpTcpClient::fetchRemoteEvent(vscpEventEx &ex)
 
 int vscpTcpClient::sendEventToRemote(vscpEventEx &ex)
 {
-  char buf[50];
+  char buf[80];
+
+  m_client->print("send ");
 
   // Head
   memset(buf,0,sizeof(buf));  
@@ -644,7 +644,6 @@ int vscpTcpClient::sendEventToRemote(vscpEventEx &ex)
 
   // Data
   for (int i=0;i<ex.sizeData;i++) {
-    memset(buf,0,sizeof(buf));
     m_client->print(itoa(ex.data[i],buf,10));
     if (i<(ex.sizeData-1)) m_client->print(",");
   }
@@ -652,7 +651,7 @@ int vscpTcpClient::sendEventToRemote(vscpEventEx &ex)
   m_client->println();
   m_client->flush();
 
-  return VSCP_ERROR_SUCCESS;
+  return checkResponse();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -664,11 +663,7 @@ int vscpTcpClient::doNoop(void)
   m_client->println("noop");
   m_client->flush();
 
-  if ( VSCP_ERROR_SUCCESS != checkResponse() ) {
-    return VSCP_ERROR_ERROR;
-  }
-
-  return VSCP_ERROR_SUCCESS;
+  return checkResponse();
 }
 
 ////////////////////////////////////////////////////////////////////////////////

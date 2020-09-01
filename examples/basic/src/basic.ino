@@ -22,9 +22,9 @@ static const char VSCP_ETH_PREFIX[] PROGMEM = "FF:FF:FF:FF:FF:FF:FF:FE:";
 
 char vscp_guid[50];
 
-const char *ssid = ""; // Enter the SSID of your WiFi Network.
+const char *ssid = "grodansparadis"; // Enter the SSID of your WiFi Network.
 const char *password =
-    ""; // Enter the Password of your WiFi Network.
+    "brattbergavagen17!"; // Enter the Password of your WiFi Network.
 
 // VSCP connection credentials
 const char *vscp_server = "192.168.1.7";
@@ -91,6 +91,10 @@ void setup() {
   Serial.print("ESP Board GUID:  ");
   Serial.println(vscp_guid);
 
+  Serial.print("RSSI:  ");
+  Serial.print(WiFi.RSSI());
+  Serial.println(" dBm");
+
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -99,6 +103,8 @@ void setup() {
 
 void loop() 
 { 
+  int rv;
+
   sensors.requestTemperatures();
   float tempC = sensors.getTempCByIndex(0);
   Serial.print(tempC);
@@ -120,6 +126,11 @@ void loop()
     Serial.println("Failed to connect to VSCP remote host");
   }
 
+  char ver[32];
+  vscp.getRemoteVersion(ver);
+  Serial.print("Remote server version: ");
+  Serial.println(ver);
+
   vscpEventEx ex;
 
   // Construct woken up event to tell the world we are on-line
@@ -140,11 +151,13 @@ void loop()
   ex.data[1] = 0;          // Zone
   ex.data[2] = 0;          // Subzone
   
-  if ( VSCP_ERROR_SUCCESS == vscp.sendEventToRemote(ex) ) {
+  if ( VSCP_ERROR_SUCCESS == (rv = vscp.sendEventToRemote(ex)) ) {
     Serial.println("Sent woken up event");  
   }
   else {
-    Serial.println("Failed to send event");
+    Serial.print("Failed to send event, ");
+    Serial.print("Error=");
+    Serial.println(rv);
   }
 
   // Construct temperature event as a VSCP Level I event
@@ -173,11 +186,13 @@ void loop()
   ex.data[4] = *(p + 0);  // MSB of 32-bit floating point number (Big-endian)   
   
   
-  if ( VSCP_ERROR_SUCCESS == vscp.sendEventToRemote(ex) ) {
+  if ( VSCP_ERROR_SUCCESS == (rv = vscp.sendEventToRemote(ex)) ) {
     Serial.println("Sent temperature event");  
   }
   else {
-    Serial.println("Failed to send event");
+    Serial.print("Failed to send event, ");
+    Serial.print("Error=");
+    Serial.println(rv);
   }
 
   // Construct temperature event as a VSCP Level II event
@@ -202,11 +217,13 @@ void loop()
   sprintf((char *)(ex.data+4),"%f",tempC);
   ex.sizeData = 4 + strlen((char *)ex.data+4) + 1; // We include the terminating zero  
   
-  if ( VSCP_ERROR_SUCCESS == vscp.sendEventToRemote(ex) ) {
+  if ( VSCP_ERROR_SUCCESS == (rv = vscp.sendEventToRemote(ex)) ) {
     Serial.println("Sent level I temperature event");  
   }
   else {
-    Serial.println("Failed to send event");
+    Serial.print("Failed to send event, ");
+    Serial.print("Error=");
+    Serial.println(rv);
   }
 
 
@@ -232,11 +249,13 @@ void loop()
   ex.data[3] = *(p + 0);  // LSB
   ex.sizeData = 4;
 
-  if ( VSCP_ERROR_SUCCESS == vscp.sendEventToRemote(ex) ) {
+  if ( VSCP_ERROR_SUCCESS == (rv = vscp.sendEventToRemote(ex)) ) {
     Serial.println("Sent battery voltage event");  
   }
   else {
-    Serial.println("Failed to send event");
+    Serial.print("Failed to send event, ");
+    Serial.print("Error=");
+    Serial.println(rv);
   }
 
   // Disconnect from VSCP host
