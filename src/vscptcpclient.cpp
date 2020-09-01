@@ -361,7 +361,8 @@ int vscpTcpClient::connect(const char* user, const char* pass)
       }
 
       // User
-      m_client->println("user admin");
+      m_client->print("user ");
+      m_client->println(user);
       m_client->flush();
       if (VSCP_ERROR_SUCCESS != checkResponse()) {
         m_client->stop();
@@ -370,7 +371,8 @@ int vscpTcpClient::connect(const char* user, const char* pass)
       }
 
       // Password
-      m_client->println("pass secret");
+      m_client->print("pass ");
+      m_client->println(pass);
       m_client->flush();
       if (VSCP_ERROR_SUCCESS != checkResponse()) {
         m_client->stop();
