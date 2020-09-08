@@ -361,7 +361,8 @@ int vscpTcpClient::connect(const char* user, const char* pass)
       }
 
       // User
-      m_client->println("user admin");
+      m_client->print(F("user "));
+      m_client->println(user);
       m_client->flush();
       if (VSCP_ERROR_SUCCESS != checkResponse()) {
         m_client->stop();
@@ -370,7 +371,8 @@ int vscpTcpClient::connect(const char* user, const char* pass)
       }
 
       // Password
-      m_client->println("pass secret");
+      m_client->print(F("pass "));
+      m_client->println(pass);
       m_client->flush();
       if (VSCP_ERROR_SUCCESS != checkResponse()) {
         m_client->stop();
@@ -396,7 +398,7 @@ int vscpTcpClient::connect(const char* user, const char* pass)
 
 int vscpTcpClient::disconnect() 
 {
-    m_client->println("quit");
+    m_client->println(F("quit"));
     m_client->flush();
     m_state = VSCP_STATE_DISCONNECTED;
     m_client->flush();
@@ -459,7 +461,7 @@ int vscpTcpClient::checkResponse()
 
 int vscpTcpClient::checkRemoteBufferCount(uint16_t *pcnt)
 {
-  m_client->println("chkdata");
+  m_client->println(F("chkdata"));
   m_client->flush();
 
   if ( VSCP_ERROR_SUCCESS != checkResponse() ) {
@@ -486,7 +488,7 @@ int vscpTcpClient::fetchRemoteEvent(vscpEventEx &ex)
 {
   char *p,*pFound;
 
-  m_client->println("retr 1");
+  m_client->println(F("retr 1"));
   m_client->flush();
 
   if ( VSCP_ERROR_SUCCESS != checkResponse() ) {
@@ -603,7 +605,7 @@ int vscpTcpClient::sendEventToRemote(vscpEventEx &ex)
 {
   char buf[80];
 
-  m_client->print("send ");
+  m_client->print(F("send "));
 
   // Head
   memset(buf,0,sizeof(buf));  
@@ -660,7 +662,7 @@ int vscpTcpClient::sendEventToRemote(vscpEventEx &ex)
 
 int vscpTcpClient::doNoop(void)
 {
-  m_client->println("noop");
+  m_client->println(F("noop"));
   m_client->flush();
 
   return checkResponse();
@@ -722,7 +724,7 @@ int vscpTcpClient::setRemoteFilter(vscpEventFilter &filter)
 
 int vscpTcpClient::getRemoteChannelId(uint32_t *chid)
 {
-  m_client->println("chid");
+  m_client->println(F("chid"));
   m_client->flush();
 
   if ( VSCP_ERROR_SUCCESS != checkResponse() ) {
@@ -746,7 +748,7 @@ int vscpTcpClient::getRemoteChannelId(uint32_t *chid)
 
 int vscpTcpClient::getRemoteGUID(uint8_t *pGUID)
 {
-  m_client->println("getguid");
+  m_client->println(F("getguid"));
   m_client->flush();
 
   if ( VSCP_ERROR_SUCCESS != checkResponse() ) {
@@ -770,7 +772,7 @@ int vscpTcpClient::setRemoteGUID(const uint8_t *pGUID)
 {
   char buf[50];
   
-  m_client->print("setguid ");
+  m_client->print(F("setguid "));
   writeGuidToStr(buf,pGUID);
   m_client->print(buf);
   m_client->println();
@@ -793,7 +795,7 @@ int vscpTcpClient::getRemoteVersion(char *pVersion)
   // Check pointer 
   if ( NULL == pVersion ) return VSCP_ERROR_INVALID_POINTER;
 
-  m_client->println("version");
+  m_client->println(F("version"));
   m_client->flush();
 
   if ( VSCP_ERROR_SUCCESS != checkResponse() ) {
@@ -823,7 +825,7 @@ int vscpTcpClient::getRemoteInterfaces(uint8_t *pcnt,
   if ( NULL == pcnt ) return VSCP_ERROR_INVALID_POINTER;
   // pinterfaces allowed to be NULL
 
-  m_client->println("interface list");
+  m_client->println(F("interface list"));
   m_client->flush();
 
   if ( VSCP_ERROR_SUCCESS != checkResponse() ) {
